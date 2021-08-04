@@ -1,0 +1,18 @@
+{
+    "name": "anicloud-ru/animelib-ru",
+    "type": "project",
+    "version": "0.0.1",
+    "require": {
+        "phug/phug": "^1.8",
+        "aws/aws-sdk-php": "^3.186"
+    },
+    "authors": [
+        {
+            "name": "krain0v",
+            "email": "krraify@yandex.ru"
+        }
+    ],
+    "autoload": {
+        "classmap": ["src", "config", "lib"]
+    }
+}
