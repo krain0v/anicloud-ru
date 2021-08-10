@@ -3,7 +3,6 @@
 namespace Animelib\Controllers;
 
 use Animelib\lib\ControllersBase;
-use Animelib\Models\Anime;
 
 
 class DashboardsController extends ControllersBase

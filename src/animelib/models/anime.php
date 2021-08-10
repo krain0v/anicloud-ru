@@ -7,12 +7,7 @@ use Animelib\lib\ModelsBase;
 
 class Anime extends ModelsBase implements Model
 {
-    public function __construct(
-        public int $id = 0,
-        public string $canonical = '',
-        public string $russian = '',
-        public string $optionally = ''
-    )
+    public function __construct()
     {
         parent::__construct();
     }

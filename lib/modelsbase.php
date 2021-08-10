@@ -21,11 +21,11 @@ abstract class ModelsBase
         $this->setClassname(get_called_class());
     }
 
-    public function all() : array
+    public function all(int $limit = 0) : array
     {
         $classname = $this->modelName();
         $scope = array();
-        $query = $this->database->prepare('SELECT * FROM '.$this->classname_plural);
+        $query = $this->database->prepare('SELECT * FROM '.$this->classname_plural.' LIMIT '.$limit);
         $query->execute();
         return $this->scoping($query, $classname, $scope);
     }
