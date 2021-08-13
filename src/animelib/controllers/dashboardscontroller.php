@@ -3,6 +3,7 @@
 namespace Animelib\Controllers;
 
 use Animelib\lib\ControllersBase;
+use Animelib\Models\Anime;
 
 
 class DashboardsController extends ControllersBase
@@ -13,6 +14,8 @@ class DashboardsController extends ControllersBase
         $this->vars = [
 
         ];
-        return $this->render();
+        var_dump((new Anime())->find(1));
+        return '';
+        //return $this->render();
     }
 }

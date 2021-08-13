@@ -1,4 +1,5 @@
-h1 animes#index
+.container
 each $anime in $animes
-    |Название - #{$anime['canonical']}
-    br
+    .anime-card
+        img(src="http://pm1.narvii.com/7206/fc40bedbf971442e363cb80610e41c8155ae7c65r1-683-960v2_uhq.jpg" width="100px")
+        |#{$anime['canonical']}

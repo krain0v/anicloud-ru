@@ -21,44 +21,45 @@ abstract class ModelsBase
         $this->setClassname(get_called_class());
     }
 
+    static public function build(array $attributes)
+    {
+        $class = get_called_class();
+        $class = new $class();
+        foreach ($attributes as $key => $value)
+            $class->$key = $value;
+        return $class;
+    }
+
     public function all(int $limit = 0) : array
     {
-        $classname = $this->modelName();
-        $scope = array();
         $query = $this->database->prepare('SELECT * FROM '.$this->classname_plural.' LIMIT '.$limit);
         $query->execute();
-        return $this->scoping($query, $classname, $scope);
+        return $this->scoping($query);
     }
 
     public function where(#[Language("SQL")] string $query = null) : array
     {
         {
-            $classname = $this->modelName();
-            $scope = array();
             $query = $this->database->prepare('SELECT * FROM '.$this->classname_plural.' WHERE '.$query);
             $query->execute();
-            return $this->scoping($query, $classname, $scope);
+            return $this->scoping($query);
         }
     }
 
-    public function find(string $id) : Model|null
+    public function find(int $id) : Model|null
     {
-        $classname = $this->modelName();
-        $query = $this->database->prepare('SELECT * FROM '.$this->classname_plural);
+        $query = $this->database->prepare('SELECT * FROM '.$this->classname_plural.' WHERE id=:id');
+        $query->bindValue(":id", $id);
         $query->execute();
         if ($query->rowCount() > 0)
         {
             $result = $query->fetch(PDO::FETCH_ASSOC);
-            $scope = new $classname;
-            foreach ($result as $item => $value)
-            {
-                $scope->$item = $value;
-            }
+            $scope = self::build($result);
         } else
             $scope = null;
         return $scope;
     }
-
+    #TODO: Make normal reaction for id = 0
     public function save(Model $class, string $name = '') : bool
     {
         $string = "";
@@ -72,6 +73,8 @@ abstract class ModelsBase
         if ($name == '') {
             $query = $this->database->prepare('UPDATE ' . strtolower($this->classname_plural) . ' SET ' . substr_replace($string, "", -1) . ' WHERE id = :id');
             $query->bindValue(':id', $class->id);
+        } else if ($class->id == 0) {
+            return false;
         } else {
             $query = $this->database->prepare('UPDATE ' . strtolower($this->classname_plural) . ' SET ' . substr_replace($string, "", -1) . ' WHERE canonical = :name');
             $query->bindValue(':name', $name);
@@ -110,19 +113,15 @@ abstract class ModelsBase
 
     /**
      * @param bool|PDOStatement $query
-     * @param string $classname
-     * @param array $scope
      * @return array
      */
-    private function scoping(bool|PDOStatement $query, string $classname, array $scope): array
+    private function scoping(bool|PDOStatement $query) : array
     {
+        $scope = array();
         if ($query->rowCount() > 0) {
             for ($i = 0; $i < $query->rowCount(); $i++) {
                 $result = $query->fetch(PDO::FETCH_ASSOC);
-                $scope[$i] = new $classname;
-                foreach ($result as $item => $value) {
-                    $scope[$i]->$item = $value;
-                }
+                $scope[$i] = self::build($result);
             }
         }
         return $scope;
