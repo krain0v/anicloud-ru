@@ -21,6 +21,6 @@ class Application
 
     static public function URL()
     {
-        return $_SERVER['SERVER_ADDR'];
+        return $_SERVER['SERVER_NAME'];
     }
 }
