@@ -18,4 +18,9 @@ class Application
     {
         $this->routes->draw();
     }
+
+    static public function URL()
+    {
+        return $_SERVER['SERVER_ADDR'];
+    }
 }

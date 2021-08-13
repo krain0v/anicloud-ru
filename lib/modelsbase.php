@@ -3,6 +3,7 @@
 
 namespace Animelib\lib;
 
+use Animelib\Application;
 use Config\Database;
 use JetBrains\PhpStorm\Language;
 use PDO;
@@ -93,6 +94,16 @@ abstract class ModelsBase
         return true;
     }
 
+    public function url() : string
+    {
+        return (Application::URL().'/'.strtolower($this->classname_plural).'/'.$this->id);
+    }
+
+    public function path() : string
+    {
+        return ('/'.strtolower($this->classname_plural).'/'.$this->id);
+    }
+
     public function setClassname(string $classname) : void
     {
         if ($pos = strrpos($classname, '\\'))
@@ -126,4 +137,6 @@ abstract class ModelsBase
         }
         return $scope;
     }
+
+
 }

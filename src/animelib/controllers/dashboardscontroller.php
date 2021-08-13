@@ -14,7 +14,8 @@ class DashboardsController extends ControllersBase
         $this->vars = [
 
         ];
-        var_dump((new Anime())->find(1));
+        $animel = (new Anime())->find(1);
+        var_dump($animel->url());
         return '';
         //return $this->render();
     }
