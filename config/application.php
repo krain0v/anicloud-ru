@@ -14,13 +14,13 @@ class Application
         $this->run();
     }
 
-    private function run()
+    private function run() : void
     {
         $this->routes->draw();
     }
 
-    static public function URL()
+    static public function URL() : string
     {
-        return $_SERVER['SERVER_NAME'];
+        return "https://".$_SERVER['SERVER_NAME'];
     }
 }
